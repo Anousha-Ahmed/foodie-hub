@@ -8,6 +8,8 @@ import '../modules/sign_up/sign_up_binding.dart';
 import '../modules/sign_up/sign_up_screen.dart';
 import '../modules/splash/splash_binding.dart';
 import '../modules/splash/splash_screen.dart';
+import '../modules/categories/categories_binding.dart';
+import '../modules/categories/categories_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -31,5 +33,11 @@ class AppPages {
         page: () => const HomeScreen(),
         binding: HomeBinding(),
         transition: Transition.fadeIn),
+    GetPage(
+    name: AppRoutes.categories,
+    page: () => const CategoriesScreen(),
+    binding: CategoriesBinding(),
+    transition: Transition.rightToLeft), 
   ];
+  
 }
