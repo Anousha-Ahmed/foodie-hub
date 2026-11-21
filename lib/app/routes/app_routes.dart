@@ -6,4 +6,7 @@ abstract class AppRoutes {
   static const categories = '/categories';
   static const categoryItems = '/category-items';
   static const cart = '/cart';
+  static const orderSummary = '/order-summary';
+  static const deliveryAddress = '/delivery-address';
+  static const paymentMethods = '/payment-methods';
 }

@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final TextInputType keyboardType;
+  final int maxLines;
   final String? Function(String?)? validator;
 
   const CustomTextField({
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
+    this.maxLines = 1,
     this.validator,
   });
 
@@ -47,6 +49,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextFormField(
           controller: widget.controller,
           obscureText: widget.isPassword && _obscure,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
           keyboardType: widget.keyboardType,
           validator: widget.validator,
           style: GoogleFonts.poppins(fontSize: 13, color: AppColors.textDark),

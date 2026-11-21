@@ -79,11 +79,11 @@ class CartItemTile extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Rs ${cartItem.item.price}',
+                      Obx(() => Text('Rs ${cartItem.total}',
                           style: GoogleFonts.poppins(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xFF1565C0))),
+                              color: const Color(0xFF1565C0)))),
                       Obx(() => QuantityStepper(
                             quantity: cartItem.quantity.value,
                             onMinus: () => controller.decrement(cartItem),

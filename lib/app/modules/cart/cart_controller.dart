@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../../data/models/cart_item_model.dart';
 import '../../data/models/food_item_model.dart';
+import '../../routes/app_routes.dart';
 
 class CartController extends GetxController {
   final items = <CartItemModel>[].obs;
@@ -28,14 +29,12 @@ class CartController extends GetxController {
   }
 
   void remove(CartItemModel c) => items.remove(c);
-
   void proceedToOrder() {
     if (items.isEmpty) {
       Get.snackbar('Cart is empty', 'Please add some food first',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
-    Get.snackbar('Order', 'Total: Rs $totalPrice (checkout coming soon)',
-        snackPosition: SnackPosition.BOTTOM);
+    Get.toNamed(AppRoutes.orderSummary);
   }
 }
