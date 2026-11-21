@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../core/constants/app_colors.dart';
 import '../../widgets/custom_search_field.dart';
+import '../../widgets/screen_header.dart';
 import 'categories_controller.dart';
 import 'widgets/category_card.dart';
 
@@ -19,31 +18,7 @@ class CategoriesScreen extends GetView<CategoriesController> {
           child: Column(
             children: [
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: Get.back,
-                    child: Container(
-                      width: 34,
-                      height: 34,
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: AppColors.primary, width: 1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.chevron_left,
-                          color: AppColors.primary, size: 22),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text('Categories',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ),
-                  const SizedBox(width: 34), // title ko center rakhne ke liye
-                ],
-              ),
+              const ScreenHeader(title: 'Categories'),
               const SizedBox(height: 16),
               CustomSearchField(
                 hint: 'Search Your Favorite here',
@@ -61,8 +36,12 @@ class CategoriesScreen extends GetView<CategoriesController> {
                         crossAxisSpacing: 12,
                         childAspectRatio: 1.35,
                       ),
-                      itemBuilder: (_, i) =>
-                          CategoryCard(category: controller.filtered[i]),
+                      itemBuilder: (_, i) {
+                        final c = controller.filtered[i];
+                        return CategoryCard(
+                            category: c,
+                            onTap: () => controller.openCategory(c));
+                      },
                     )),
               ),
             ],

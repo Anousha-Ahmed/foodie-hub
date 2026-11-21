@@ -4,4 +4,6 @@ abstract class AppRoutes {
   static const signUp = '/sign-up';
   static const home = '/home';
   static const categories = '/categories';
+  static const categoryItems = '/category-items';
+  static const cart = '/cart';
 }

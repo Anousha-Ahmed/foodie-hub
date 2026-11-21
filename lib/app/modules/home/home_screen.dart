@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../widgets/custom_bottom_nav.dart';
 import 'home_controller.dart';
 import 'widgets/category_item.dart';
-import 'widgets/custom_bottom_nav.dart';
 import 'widgets/food_card.dart';
 import 'widgets/home_header.dart';
-import '../../routes/app_routes.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -20,8 +19,7 @@ class HomeScreen extends GetView<HomeController> {
         child: Obx(() {
           if (controller.currentTab.value != 0) {
             return Center(
-              child: Text(
-                  controller.currentTab.value == 1 ? 'Cart' : 'Profile',
+              child: Text('Profile',
                   style: GoogleFonts.poppins(fontSize: 18)),
             );
           }
@@ -57,9 +55,10 @@ class HomeScreen extends GetView<HomeController> {
                             style: GoogleFonts.poppins(
                                 fontSize: 15, fontWeight: FontWeight.w600)),
                         GestureDetector(
-                          onTap: () => Get.toNamed(AppRoutes.categories),
+                          onTap: controller.openAllCategories,
                           child: Row(children: [
-                            Text('See All', style: GoogleFonts.poppins(fontSize: 12)),
+                            Text('See All',
+                                style: GoogleFonts.poppins(fontSize: 12)),
                             const Icon(Icons.chevron_right, size: 18),
                           ]),
                         ),
@@ -69,7 +68,10 @@ class HomeScreen extends GetView<HomeController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: controller.categories
-                          .map((c) => CategoryItem(category: c))
+                          .map((c) => CategoryItem(
+                                category: c,
+                                onTap: () => controller.openCategory(c),
+                              ))
                           .toList(),
                     ),
                     const SizedBox(height: 26),
@@ -105,7 +107,7 @@ class HomeScreen extends GetView<HomeController> {
       ),
       bottomNavigationBar: Obx(() => CustomBottomNav(
             currentIndex: controller.currentTab.value,
-            onTap: controller.changeTab,
+            onTap: controller.onNavTap,
           )),
     );
   }

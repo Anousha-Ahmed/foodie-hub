@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../core/constants/app_assets.dart';
 import '../../data/models/category_model.dart';
+import '../../routes/app_routes.dart';
 
 class CategoriesController extends GetxController {
   final searchController = TextEditingController();
@@ -34,6 +35,9 @@ class CategoriesController extends GetxController {
           : _all.where((c) => c.name.toLowerCase().contains(q)).toList(),
     );
   }
+
+  void openCategory(CategoryModel c) =>
+      Get.toNamed(AppRoutes.categoryItems, arguments: c);
 
   @override
   void onClose() {

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app/core/constants/app_colors.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
+import 'app/modules/cart/cart_controller.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -29,7 +30,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
       ),
       initialRoute: AppRoutes.splash,
-      getPages: AppPages.pages,
+      initialBinding: BindingsBuilder(() {
+      Get.put(CartController(), permanent: true);
+    }),
+          getPages: AppPages.pages,
     );
   }
 }
