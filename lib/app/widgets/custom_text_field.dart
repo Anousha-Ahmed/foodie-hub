@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../core/constants/app_colors.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String? label; // chota grey label field ke upar
+  final String? label; 
   final String hint;
   final TextEditingController controller;
   final bool isPassword;
   final TextInputType keyboardType;
   final int maxLines;
+  final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
 
   const CustomTextField({
@@ -20,6 +22,7 @@ class CustomTextField extends StatefulWidget {
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
+    this.inputFormatters,
     this.validator,
   });
 
@@ -51,6 +54,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: widget.isPassword && _obscure,
           maxLines: widget.isPassword ? 1 : widget.maxLines,
           keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
           validator: widget.validator,
           style: GoogleFonts.poppins(fontSize: 13, color: AppColors.textDark),
           decoration: InputDecoration(

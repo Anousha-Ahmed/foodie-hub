@@ -6,12 +6,14 @@ import '../../../data/models/payment_method_model.dart';
 
 class PaymentOptionTile extends StatelessWidget {
   final PaymentMethodModel method;
+  final String? title; 
   final bool selected;
   final VoidCallback onTap;
 
   const PaymentOptionTile({
     super.key,
     required this.method,
+    this.title,
     required this.selected,
     required this.onTap,
   });
@@ -27,11 +29,11 @@ class PaymentOptionTile extends StatelessWidget {
             Image.asset(method.asset,
                 width: 20,
                 height: 20,
-                errorBuilder: (_, __, ___) =>
-                    Icon(method.fallbackIcon, size: 22, color: method.fallbackColor)),
+                errorBuilder: (_, __, ___) => Icon(method.fallbackIcon,
+                    size: 22, color: method.fallbackColor)),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(method.name,
+              child: Text(title ?? method.name,
                   style: GoogleFonts.poppins(
                       fontSize: 11, color: AppColors.textGrey)),
             ),

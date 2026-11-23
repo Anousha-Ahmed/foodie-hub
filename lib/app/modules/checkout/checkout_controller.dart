@@ -13,7 +13,7 @@ class CheckoutController extends GetxController {
   final cart = Get.find<CartController>();
   final _orderService = OrderService();
 
-  // ---- Order Summary ----
+
   final orderId = (1000000 + Random().nextInt(9000000)).toString();
   final int deliveryCharges = 100;
 
@@ -24,6 +24,15 @@ class CheckoutController extends GetxController {
   final addressFormKey = GlobalKey<FormState>();
   final addressController = TextEditingController();
   final instructionsController = TextEditingController();
+
+  // ---- Add Card ----
+  final cardFormKey = GlobalKey<FormState>();
+  final cardHolderController = TextEditingController();
+  final cardNumberController = TextEditingController();
+  final expiryController = TextEditingController();
+  final cvvController = TextEditingController();
+  // Poora card number kabhi save nahi karte, sirf aakhri 4 digits
+  final savedCardLast4 = RxnString();
 
   // ---- Payment ----
   final cardMethods = const [
@@ -83,6 +92,25 @@ class CheckoutController extends GetxController {
 
   void selectMethod(PaymentMethodModel m) => selectedMethod.value = m;
 
+  /// Card wali row par tap: card nahi hai to Add Card screen, warna select
+  void onCardTap() {
+    if (savedCardLast4.value == null) {
+      Get.toNamed(AppRoutes.addCard);
+    } else {
+      selectMethod(cardMethods.first);
+    }
+  }
+
+  void addCard() {
+    if (!cardFormKey.currentState!.validate()) return;
+    final digits = cardNumberController.text.replaceAll(' ', '');
+    savedCardLast4.value = digits.substring(digits.length - 4);
+    selectMethod(cardMethods.first);
+    Get.back();
+    Get.snackbar('Card added', 'Card ending ${savedCardLast4.value} saved',
+        snackPosition: SnackPosition.BOTTOM);
+  }
+
   Future<void> payAndConfirm() async {
     final method = selectedMethod.value;
     if (method == null) {
@@ -100,24 +128,17 @@ class CheckoutController extends GetxController {
         total: total,
         address: addressController.text.trim(),
         instructions: instructionsController.text.trim(),
-        paymentMethod: method.name,
+        paymentMethod: method.id == 'card'
+            ? 'Card ending ${savedCardLast4.value}'
+            : method.name,
       );
       cart.items.clear();
-      Get.offAllNamed(AppRoutes.home);
-      Get.snackbar('Order placed', 'Your order #$orderId has been confirmed',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.offAllNamed(AppRoutes.paymentSuccess);
     } catch (e) {
       Get.snackbar('Order failed', 'Something went wrong, please try again',
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
     }
-  }
-
-  @override
-  void onClose() {
-    addressController.dispose();
-    instructionsController.dispose();
-    super.onClose();
   }
 }

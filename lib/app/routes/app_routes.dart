@@ -9,4 +9,6 @@ abstract class AppRoutes {
   static const orderSummary = '/order-summary';
   static const deliveryAddress = '/delivery-address';
   static const paymentMethods = '/payment-methods';
+  static const addCard = '/add-card';
+  static const paymentSuccess = '/payment-success';
 }

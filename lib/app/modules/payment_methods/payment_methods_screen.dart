@@ -47,6 +47,7 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Obx(() {
                   final selectedId = controller.selectedMethod.value?.id;
+                  final last4 = controller.savedCardLast4.value;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -58,8 +59,11 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
                             for (final m in controller.cardMethods)
                               PaymentOptionTile(
                                 method: m,
+                                title: last4 == null
+                                    ? m.name
+                                    : '•••• •••• •••• $last4',
                                 selected: selectedId == m.id,
-                                onTap: () => controller.selectMethod(m),
+                                onTap: controller.onCardTap,
                               ),
                           ],
                         ),

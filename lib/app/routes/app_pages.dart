@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../modules/add_card/add_card_screen.dart';
 import '../modules/cart/cart_screen.dart';
 import '../modules/categories/categories_binding.dart';
 import '../modules/categories/categories_screen.dart';
@@ -7,10 +8,11 @@ import '../modules/category_items/category_items_binding.dart';
 import '../modules/category_items/category_items_screen.dart';
 import '../modules/checkout/checkout_binding.dart';
 import '../modules/delivery_address/delivery_address_screen.dart';
-import '../modules/order_summary/order_summary_screen.dart';
-import '../modules/payment_methods/payment_methods_screen.dart';
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_screen.dart';
+import '../modules/order_summary/order_summary_screen.dart';
+import '../modules/payment_methods/payment_methods_screen.dart';
+import '../modules/payment_success/payment_success_screen.dart';
 import '../modules/sign_in/sign_in_binding.dart';
 import '../modules/sign_in/sign_in_screen.dart';
 import '../modules/sign_up/sign_up_binding.dart';
@@ -50,22 +52,32 @@ class AppPages {
         page: () => const CategoryItemsScreen(),
         binding: CategoryItemsBinding(),
         transition: Transition.rightToLeft),
+    // CartController main.dart me permanent register hai, is liye binding nahi chahiye
     GetPage(
         name: AppRoutes.cart,
         page: () => const CartScreen(),
         transition: Transition.rightToLeft),
+    // CheckoutController yahan se bana, aage ki teeno screens isi ko use karti hain
     GetPage(
-    name: AppRoutes.orderSummary,
-    page: () => const OrderSummaryScreen(),
-    binding: CheckoutBinding(),
-    transition: Transition.rightToLeft),
-  GetPage(
-      name: AppRoutes.deliveryAddress,
-      page: () => const DeliveryAddressScreen(),
-      transition: Transition.rightToLeft),
-  GetPage(
-      name: AppRoutes.paymentMethods,
-      page: () => const PaymentMethodsScreen(),
-      transition: Transition.rightToLeft),
+        name: AppRoutes.orderSummary,
+        page: () => const OrderSummaryScreen(),
+        binding: CheckoutBinding(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: AppRoutes.deliveryAddress,
+        page: () => const DeliveryAddressScreen(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: AppRoutes.paymentMethods,
+        page: () => const PaymentMethodsScreen(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: AppRoutes.addCard,
+        page: () => const AddCardScreen(),
+        transition: Transition.downToUp),
+    GetPage(
+        name: AppRoutes.paymentSuccess,
+        page: () => const PaymentSuccessScreen(),
+        transition: Transition.fadeIn),
   ];
 }
