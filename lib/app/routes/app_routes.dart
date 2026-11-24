@@ -13,4 +13,7 @@ abstract class AppRoutes {
   static const paymentSuccess = '/payment-success';
   static const profile = '/profile';
   static const editProfile = '/edit-profile';
+  static const settings = '/settings';
+  static const settingsPayment = '/settings-payment';
+  static const changePassword = '/change-password';
 }

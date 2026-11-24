@@ -3,13 +3,17 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../routes/app_routes.dart';
 import '../../widgets/bottom_action_bar.dart';
+import '../../widgets/custom_button.dart';
 import '../../widgets/screen_header.dart';
+import '../cart/cart_controller.dart';
 import '../checkout/checkout_controller.dart';
 import 'widgets/payment_option_tile.dart';
 
 class PaymentMethodsScreen extends GetView<CheckoutController> {
-  const PaymentMethodsScreen({super.key});
+  final bool settingsMode;
+  const PaymentMethodsScreen({super.key, this.settingsMode = false});
 
   Widget _title(String text) => Padding(
         padding: const EdgeInsets.only(bottom: 10),
@@ -31,6 +35,20 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
               offset: const Offset(0, 2)),
         ],
       );
+
+  void _proceedFromSettings() {
+    if (controller.selectedMethod.value == null) {
+      Get.snackbar('Payment', 'Please select a payment method',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    if (Get.find<CartController>().items.isEmpty) {
+      Get.snackbar('Cart is empty', 'Add some food first, then pay',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    Get.toNamed(AppRoutes.orderSummary);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +81,7 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
                                     ? m.name
                                     : '•••• •••• •••• $last4',
                                 selected: selectedId == m.id,
+                                showChevron: settingsMode,
                                 onTap: controller.onCardTap,
                               ),
                           ],
@@ -81,6 +100,7 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
                                 method: controller.otherMethods[i],
                                 selected:
                                     selectedId == controller.otherMethods[i].id,
+                                showChevron: settingsMode,
                                 onTap: () => controller
                                     .selectMethod(controller.otherMethods[i]),
                               ),
@@ -96,11 +116,20 @@ class PaymentMethodsScreen extends GetView<CheckoutController> {
                 }),
               ),
             ),
-            Obx(() => BottomActionBar(
-                  buttonText: 'Pay & Confirm',
-                  isLoading: controller.isLoading.value,
-                  onPressed: controller.payAndConfirm,
-                )),
+            if (settingsMode)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+                child: CustomButton(
+                  text: 'Proceed to Payment',
+                  onPressed: _proceedFromSettings,
+                ),
+              )
+            else
+              Obx(() => BottomActionBar(
+                    buttonText: 'Pay & Confirm',
+                    isLoading: controller.isLoading.value,
+                    onPressed: controller.payAndConfirm,
+                  )),
           ],
         ),
       ),

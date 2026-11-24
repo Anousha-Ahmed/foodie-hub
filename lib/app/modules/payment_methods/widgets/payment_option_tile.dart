@@ -8,6 +8,7 @@ class PaymentOptionTile extends StatelessWidget {
   final PaymentMethodModel method;
   final String? title; 
   final bool selected;
+  final bool showChevron; 
   final VoidCallback onTap;
 
   const PaymentOptionTile({
@@ -15,6 +16,7 @@ class PaymentOptionTile extends StatelessWidget {
     required this.method,
     this.title,
     required this.selected,
+    this.showChevron = false,
     required this.onTap,
   });
 
@@ -39,7 +41,10 @@ class PaymentOptionTile extends StatelessWidget {
             ),
             if (selected)
               const Icon(Icons.check_circle,
-                  size: 18, color: AppColors.primary),
+                  size: 18, color: AppColors.primary)
+            else if (showChevron)
+              const Icon(Icons.chevron_right,
+                  size: 20, color: AppColors.accent),
           ],
         ),
       ),

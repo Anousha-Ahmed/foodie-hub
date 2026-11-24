@@ -23,6 +23,10 @@ import '../modules/sign_up/sign_up_binding.dart';
 import '../modules/sign_up/sign_up_screen.dart';
 import '../modules/splash/splash_binding.dart';
 import '../modules/splash/splash_screen.dart';
+import '../modules/change_password/change_password_binding.dart';
+import '../modules/change_password/change_password_screen.dart';
+import '../modules/settings/settings_binding.dart';
+import '../modules/settings/settings_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -93,5 +97,20 @@ class AppPages {
       page: () => const EditProfileScreen(),
       binding: EditProfileBinding(),
       transition: Transition.rightToLeft),
-    ];
+  GetPage(
+    name: AppRoutes.settings,
+    page: () => const SettingsScreen(),
+    binding: SettingsBinding(),
+    transition: Transition.rightToLeft),
+  GetPage(
+      name: AppRoutes.settingsPayment,
+      page: () => const PaymentMethodsScreen(settingsMode: true),
+      binding: CheckoutBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+      name: AppRoutes.changePassword,
+      page: () => const ChangePasswordScreen(),
+      binding: ChangePasswordBinding(),
+      transition: Transition.rightToLeft),
+  ];
 }

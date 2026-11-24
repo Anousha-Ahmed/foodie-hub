@@ -3,5 +3,9 @@ import 'checkout_controller.dart';
 
 class CheckoutBinding extends Bindings {
   @override
-  void dependencies() => Get.put(CheckoutController());
+  void dependencies() {
+    if (!Get.isRegistered<CheckoutController>()) {
+      Get.put(CheckoutController());
+    }
+  }
 }

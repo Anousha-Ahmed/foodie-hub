@@ -14,34 +14,6 @@ import 'widgets/profile_tabs.dart';
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({super.key});
 
-  void _openSettings() {
-    Get.bottomSheet(
-      Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: Text('Sign Out',
-                    style: GoogleFonts.poppins(fontSize: 14)),
-                onTap: () {
-                  Get.back();
-                  controller.logout();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +26,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 title: 'Profile',
                 onBack: () => Get.offAllNamed(AppRoutes.home),
                 trailing: GestureDetector(
-                  onTap: _openSettings,
+                  onTap: () => Get.toNamed(AppRoutes.settings),
                   child: const Icon(Icons.settings,
                       size: 22, color: AppColors.textDark),
                 ),
