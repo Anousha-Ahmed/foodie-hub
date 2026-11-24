@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
   final bool isPassword;
+  final bool readOnly;
   final TextInputType keyboardType;
   final int maxLines;
   final List<TextInputFormatter>? inputFormatters;
@@ -20,6 +21,7 @@ class CustomTextField extends StatefulWidget {
     required this.hint,
     required this.controller,
     this.isPassword = false,
+    this.readOnly = false,
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
     this.inputFormatters,
@@ -51,21 +53,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ],
         TextFormField(
           controller: widget.controller,
+          readOnly: widget.readOnly,
           obscureText: widget.isPassword && _obscure,
           maxLines: widget.isPassword ? 1 : widget.maxLines,
           keyboardType: widget.keyboardType,
           inputFormatters: widget.inputFormatters,
           validator: widget.validator,
-          style: GoogleFonts.poppins(fontSize: 13, color: AppColors.textDark),
+          style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: widget.readOnly ? AppColors.textGrey : AppColors.textDark),
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle:
                 GoogleFonts.poppins(fontSize: 13, color: AppColors.textGrey),
             isDense: true,
+            filled: widget.readOnly,
+            fillColor: const Color(0xFFF5F5F5),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
             enabledBorder: _border(AppColors.border),
-            focusedBorder: _border(AppColors.primary),
+            focusedBorder:
+                _border(widget.readOnly ? AppColors.border : AppColors.primary),
             errorBorder: _border(Colors.red),
             focusedErrorBorder: _border(Colors.red),
             errorStyle: GoogleFonts.poppins(fontSize: 11),

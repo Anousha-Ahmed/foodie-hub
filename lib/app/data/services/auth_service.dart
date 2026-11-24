@@ -52,5 +52,12 @@ class AuthService {
     return UserModel.fromMap(doc.data()!);
   }
 
+  Future<void> updateUser(UserModel user) {
+    return _db
+        .collection('users')
+        .doc(user.uid)
+        .set(user.toMap(), SetOptions(merge: true));
+  }
+
   Future<void> signOut() => _auth.signOut();
 }

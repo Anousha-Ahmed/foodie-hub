@@ -8,6 +8,10 @@ import '../modules/category_items/category_items_binding.dart';
 import '../modules/category_items/category_items_screen.dart';
 import '../modules/checkout/checkout_binding.dart';
 import '../modules/delivery_address/delivery_address_screen.dart';
+import '../modules/edit_profile/edit_profile_binding.dart';
+import '../modules/edit_profile/edit_profile_screen.dart';
+import '../modules/profile/profile_binding.dart';
+import '../modules/profile/profile_screen.dart';
 import '../modules/home/home_binding.dart';
 import '../modules/home/home_screen.dart';
 import '../modules/order_summary/order_summary_screen.dart';
@@ -79,5 +83,15 @@ class AppPages {
         name: AppRoutes.paymentSuccess,
         page: () => const PaymentSuccessScreen(),
         transition: Transition.fadeIn),
-  ];
+    GetPage(
+    name: AppRoutes.profile,
+    page: () => const ProfileScreen(),
+    binding: ProfileBinding(),
+    transition: Transition.fadeIn),
+  GetPage(
+      name: AppRoutes.editProfile,
+      page: () => const EditProfileScreen(),
+      binding: EditProfileBinding(),
+      transition: Transition.rightToLeft),
+    ];
 }

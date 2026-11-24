@@ -53,12 +53,14 @@ class HomeController extends GetxController {
   String get firstName => (user.value?.fullName ?? 'Guest').split(' ').first;
 
   void onNavTap(int i) {
-    if (i == 1) {
-      Get.toNamed(AppRoutes.cart);
-    } else {
-      currentTab.value = i;
-    }
+  if (i == 1) {
+    Get.toNamed(AppRoutes.cart);
+  } else if (i == 2) {
+    Get.toNamed(AppRoutes.profile);
+  } else {
+    currentTab.value = i;
   }
+}
 
   void openCategory(CategoryModel c) =>
       Get.toNamed(AppRoutes.categoryItems, arguments: c);

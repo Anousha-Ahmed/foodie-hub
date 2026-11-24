@@ -4,17 +4,24 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../core/constants/app_colors.dart';
 
-/// Back button + center title (Categories, Pizza, Cart screens)
 class ScreenHeader extends StatelessWidget {
   final String title;
-  const ScreenHeader({super.key, required this.title});
+  final Widget? trailing;
+  final VoidCallback? onBack;
+
+  const ScreenHeader({
+    super.key,
+    required this.title,
+    this.trailing,
+    this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         GestureDetector(
-          onTap: Get.back,
+          onTap: onBack ?? () => Get.back(),
           child: Container(
             width: 34,
             height: 34,
@@ -32,7 +39,10 @@ class ScreenHeader extends StatelessWidget {
               style: GoogleFonts.poppins(
                   fontSize: 14, fontWeight: FontWeight.w500)),
         ),
-        const SizedBox(width: 34), // title ko center rakhne ke liye
+        SizedBox(
+          width: 34,
+          child: Align(alignment: Alignment.centerRight, child: trailing),
+        ),
       ],
     );
   }

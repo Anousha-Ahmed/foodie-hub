@@ -68,8 +68,7 @@ class CartScreen extends GetView<CartController> {
                 if (i == 0) {
                   Get.offAllNamed(AppRoutes.home);
                 } else if (i == 2) {
-                  Get.snackbar('Profile', 'Coming soon',
-                      snackPosition: SnackPosition.BOTTOM);
+                  Get.offNamed(AppRoutes.profile);
                 }
               },
             ),
