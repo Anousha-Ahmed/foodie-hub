@@ -15,8 +15,7 @@ class SettingsController extends GetxController {
 
   void openPayment() => Get.toNamed(AppRoutes.settingsPayment);
   void openChangePassword() => Get.toNamed(AppRoutes.changePassword);
-  // Address Edit Profile screen me hi badalta hai
-  void openAddress() => Get.toNamed(AppRoutes.editProfile);
+  void openAddress() => Get.toNamed(AppRoutes.addresses);
 
   // ---------- Log out ----------
   void confirmLogout() {

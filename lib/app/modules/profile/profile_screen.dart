@@ -64,11 +64,16 @@ class ProfileScreen extends GetView<ProfileController> {
                   padding: const EdgeInsets.all(16),
                   itemCount: list.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 14),
-                  itemBuilder: (_, i) => OrderCard(
+                  itemBuilder: (_, i) => GestureDetector(
+                  onTap: isHistory
+                      ? null
+                      : () => Get.toNamed(AppRoutes.trackOrder, arguments: list[i]),
+                  child: OrderCard(
                     order: list[i],
                     showReorder: isHistory,
                     onReorder: () => controller.reorder(list[i]),
                   ),
+                ),
                 );
               }),
             ),

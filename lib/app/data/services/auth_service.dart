@@ -86,6 +86,11 @@ class AuthService {
     for (final d in orders.docs) {
       batch.delete(d.reference);
     }
+    final addrs =
+        await _db.collection('users').doc(u.uid).collection('addresses').get();
+    for (final d in addrs.docs) {
+      batch.delete(d.reference);
+    }
     batch.delete(_db.collection('users').doc(u.uid));
     await batch.commit();
 

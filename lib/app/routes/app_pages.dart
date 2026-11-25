@@ -27,6 +27,12 @@ import '../modules/change_password/change_password_binding.dart';
 import '../modules/change_password/change_password_screen.dart';
 import '../modules/settings/settings_binding.dart';
 import '../modules/settings/settings_screen.dart';
+import '../modules/add_address/add_address_binding.dart';
+import '../modules/add_address/add_address_screen.dart';
+import '../modules/address/address_binding.dart';
+import '../modules/address/address_screen.dart';
+import '../modules/track_order/track_order_binding.dart';
+import '../modules/track_order/track_order_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -92,25 +98,40 @@ class AppPages {
     page: () => const ProfileScreen(),
     binding: ProfileBinding(),
     transition: Transition.fadeIn),
-  GetPage(
-      name: AppRoutes.editProfile,
-      page: () => const EditProfileScreen(),
-      binding: EditProfileBinding(),
+    GetPage(
+        name: AppRoutes.editProfile,
+        page: () => const EditProfileScreen(),
+        binding: EditProfileBinding(),
+        transition: Transition.rightToLeft),
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingsScreen(),
+      binding: SettingsBinding(),
+      transition: Transition.rightToLeft),
+    GetPage(
+        name: AppRoutes.settingsPayment,
+        page: () => const PaymentMethodsScreen(settingsMode: true),
+        binding: CheckoutBinding(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: AppRoutes.changePassword,
+        page: () => const ChangePasswordScreen(),
+        binding: ChangePasswordBinding(),
+        transition: Transition.rightToLeft),
+    GetPage(
+      name: AppRoutes.addresses,
+      page: () => const AddressScreen(),
+      binding: AddressBinding(),
       transition: Transition.rightToLeft),
   GetPage(
-    name: AppRoutes.settings,
-    page: () => const SettingsScreen(),
-    binding: SettingsBinding(),
-    transition: Transition.rightToLeft),
-  GetPage(
-      name: AppRoutes.settingsPayment,
-      page: () => const PaymentMethodsScreen(settingsMode: true),
-      binding: CheckoutBinding(),
+      name: AppRoutes.addAddress,
+      page: () => const AddAddressScreen(),
+      binding: AddAddressBinding(),
       transition: Transition.rightToLeft),
   GetPage(
-      name: AppRoutes.changePassword,
-      page: () => const ChangePasswordScreen(),
-      binding: ChangePasswordBinding(),
+      name: AppRoutes.trackOrder,
+      page: () => const TrackOrderScreen(),
+      binding: TrackOrderBinding(),
       transition: Transition.rightToLeft),
-  ];
+    ];
 }

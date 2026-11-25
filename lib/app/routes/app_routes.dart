@@ -16,4 +16,7 @@ abstract class AppRoutes {
   static const settings = '/settings';
   static const settingsPayment = '/settings-payment';
   static const changePassword = '/change-password';
+  static const addresses = '/addresses';
+  static const addAddress = '/add-address';
+  static const trackOrder = '/track-order';
 }
