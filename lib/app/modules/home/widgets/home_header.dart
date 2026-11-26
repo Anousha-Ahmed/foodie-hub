@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../core/constants/app_assets.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../widgets/profile_avatar.dart';
 
 class HomeHeader extends StatelessWidget {
   final String name;
   final String country;
-  const HomeHeader({super.key, required this.name, required this.country});
+  final String photoBase64;
+
+  const HomeHeader({
+    super.key,
+    required this.name,
+    required this.country,
+    this.photoBase64 = '',
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipOval(
-          child: Image.asset(AppAssets.profile,
-              width: 44,
-              height: 44,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                  width: 44,
-                  height: 44,
-                  color: Colors.grey.shade300,
-                  child: const Icon(Icons.person, color: Colors.grey))),
-        ),
+        ProfileAvatar(photoBase64: photoBase64, size: 46),
         const SizedBox(width: 10),
         Expanded(
           child: Column(

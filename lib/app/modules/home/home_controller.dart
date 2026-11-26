@@ -56,7 +56,7 @@ class HomeController extends GetxController {
   if (i == 1) {
     Get.toNamed(AppRoutes.cart);
   } else if (i == 2) {
-    Get.toNamed(AppRoutes.profile);
+    Get.toNamed(AppRoutes.profile)?.then((_) => loadUser());
   } else {
     currentTab.value = i;
   }

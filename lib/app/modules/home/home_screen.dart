@@ -32,6 +32,7 @@ class HomeScreen extends GetView<HomeController> {
                     HomeHeader(
                       name: controller.user.value?.fullName ?? 'Guest',
                       country: controller.user.value?.country ?? '',
+                      photoBase64: controller.user.value?.photoBase64 ?? '',
                     ),
                     const SizedBox(height: 16),
                     RichText(

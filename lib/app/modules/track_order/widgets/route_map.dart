@@ -1,148 +1,94 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RouteMap extends StatelessWidget {
   final double progress;
   const RouteMap({super.key, required this.progress});
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: CustomPaint(painter: _MapPainter(progress)),
-    );
-  }
-}
-
-class _MapPainter extends CustomPainter {
-  final double progress;
-  _MapPainter(this.progress);
-
-  static const _bg = Color(0xFFE9EDF2);
-  static const _block = Color(0xFFCFD8E3);
-  static const _orange = Color(0xFFFF8A00);
-
-
-  static const _route = [
-    Offset(.78, .16),
-    Offset(.78, .22),
-    Offset(.64, .28),
-    Offset(.50, .32),
-    Offset(.42, .38),
-    Offset(.34, .44),
-    Offset(.24, .50),
+  static const _route = <LatLng>[
+    LatLng(28.4252, 70.3052), // restaurant
+    LatLng(28.4245, 70.3020),
+    LatLng(28.4228, 70.3000),
+    LatLng(28.4215, 70.2975),
+    LatLng(28.4200, 70.2950),
+    LatLng(28.4188, 70.2925),
+    LatLng(28.4178, 70.2900), // customer
   ];
 
-  @override
-  void paint(Canvas canvas, Size size) {
-    final w = size.width, h = size.height;
-    Offset p(Offset n) => Offset(n.dx * w, n.dy * h);
+  double _dist(LatLng a, LatLng b) {
+    final dx = a.latitude - b.latitude;
+    final dy = a.longitude - b.longitude;
+    return (dx * dx + dy * dy);
+  }
 
-    canvas.drawRect(Offset.zero & size, Paint()..color = _bg);
-
-    // Roads
-    final road = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 9;
-    for (final y in [.10, .30, .58, .80]) {
-      canvas.drawLine(Offset(0, h * y), Offset(w, h * y), road);
+  LatLng _riderAt(double p) {
+    final lens = <double>[];
+    double total = 0;
+    for (var i = 0; i < _route.length - 1; i++) {
+      final d = _dist(_route[i], _route[i + 1]);
+      lens.add(d);
+      total += d;
     }
-    for (final x in [.14, .46, .70, .92]) {
-      canvas.drawLine(Offset(w * x, 0), Offset(w * x, h), road);
+    var target = total * p.clamp(0.0, 1.0);
+    for (var i = 0; i < lens.length; i++) {
+      if (target <= lens[i]) {
+        final t = lens[i] == 0 ? 0.0 : target / lens[i];
+        return LatLng(
+          _route[i].latitude +
+              (_route[i + 1].latitude - _route[i].latitude) * t,
+          _route[i].longitude +
+              (_route[i + 1].longitude - _route[i].longitude) * t,
+        );
+      }
+      target -= lens[i];
     }
-    canvas.drawLine(Offset(0, h * .70), Offset(w, h * .42), road);
-
-    // Blocks
-    final blockPaint = Paint()..color = _block;
-    const blocks = [
-      Rect.fromLTWH(.17, .12, .26, .15),
-      Rect.fromLTWH(.50, .34, .17, .20),
-      Rect.fromLTWH(.73, .60, .17, .17),
-      Rect.fromLTWH(.17, .60, .25, .17),
-      Rect.fromLTWH(.50, .62, .17, .15),
-      Rect.fromLTWH(.02, .33, .09, .22),
-      Rect.fromLTWH(.73, .84, .20, .12),
-      Rect.fromLTWH(.17, .84, .26, .12),
-    ];
-    for (final b in blocks) {
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromLTWH(b.left * w, b.top * h, b.width * w, b.height * h),
-            const Radius.circular(8)),
-        blockPaint,
-      );
-    }
-
-    // Lake + roundabout
-    canvas.drawOval(
-        Rect.fromLTWH(w * .62, h * .06, w * .32, h * .10), blockPaint);
-    canvas.drawCircle(
-        Offset(w * .20, h * .45),
-        w * .09,
-        Paint()
-          ..color = Colors.white
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 8);
-
-    // Route
-    final path = Path()..moveTo(p(_route.first).dx, p(_route.first).dy);
-    for (final pt in _route.skip(1)) {
-      path.lineTo(p(pt).dx, p(pt).dy);
-    }
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = _orange
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 4
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round,
-    );
-
-    // Restaurant (start) - khali gol
-    final start = p(_route.first);
-    canvas.drawCircle(start, 6, Paint()..color = Colors.white);
-    canvas.drawCircle(
-        start,
-        6,
-        Paint()
-          ..color = _orange
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 3);
-
-    // Customer (end) - laal pin
-    final end = p(_route.last);
-    canvas.drawCircle(end, 20, Paint()..color = const Color(0xFFF44336));
-    final icon = Icons.location_on;
-    final tp = TextPainter(
-      text: TextSpan(
-        text: String.fromCharCode(icon.codePoint),
-        style: TextStyle(
-            fontFamily: icon.fontFamily, fontSize: 22, color: Colors.white),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    tp.paint(canvas, end - Offset(tp.width / 2, tp.height / 2));
-
-    // Rider - route par progress ke hisaab se
-    final metric = path.computeMetrics().first;
-    final tangent = metric.getTangentForOffset(metric.length * progress);
-    if (tangent != null) {
-      final r = tangent.position;
-      canvas.drawCircle(r, 24, Paint()..color = _orange.withOpacity(0.18));
-      canvas.drawCircle(r, 17, Paint()..color = _orange.withOpacity(0.30));
-      canvas.drawCircle(r, 11, Paint()..color = const Color(0xFFF5B83D));
-      canvas.drawCircle(
-          r,
-          11,
-          Paint()
-            ..color = Colors.white
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 2);
-    }
+    return _route.last;
   }
 
   @override
-  bool shouldRepaint(covariant _MapPainter old) => old.progress != progress;
+  Widget build(BuildContext context) {
+    final rider = _riderAt(progress);
+
+    return GoogleMap(
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(28.4215, 70.2976),
+        zoom: 15.2,
+      ),
+      padding: const EdgeInsets.only(bottom: 220),
+      zoomControlsEnabled: false,
+      myLocationButtonEnabled: false,
+      mapToolbarEnabled: false,
+      polylines: {
+        Polyline(
+          polylineId: const PolylineId('route'),
+          points: _route,
+          color: const Color(0xFFFF8A00),
+          width: 5,
+        ),
+      },
+      markers: {
+        Marker(
+          markerId: const MarkerId('restaurant'),
+          position: _route.first,
+          infoWindow: const InfoWindow(title: 'Restaurant'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueOrange),
+        ),
+        Marker(
+          markerId: const MarkerId('customer'),
+          position: _route.last,
+          infoWindow: const InfoWindow(title: 'Your location'),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        ),
+        Marker(
+          markerId: const MarkerId('rider'),
+          position: rider,
+          infoWindow: const InfoWindow(title: 'Courier'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueYellow),
+        ),
+      },
+    );
+  }
 }
